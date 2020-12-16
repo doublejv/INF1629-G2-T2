@@ -33,7 +33,7 @@ app.post('/execute', (req, res) => {
   
     var pythonResult;
     
-    const python = spawn('python', ['term-frequency.py', `./upload/term_words.txt`]);
+    const python = spawn('python', ['term-frequency.py', `../term_words.txt`]);
     
     python.stdout.on('data', function (data) {
       console.log('Pipe data from python script ...');
@@ -42,7 +42,8 @@ app.post('/execute', (req, res) => {
 
     python.on('close', code => {
       if (code !== 0) {
-        throw Error('Could not execute python script.')
+        res.status(500).send('Could not execute python script.');
+        return
       }
 
       res.send(pythonResult);
